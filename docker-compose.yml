@@ -1,0 +1,26 @@
+ services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: mediamtx-rtsp
+    restart: unless-stopped
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml
+    ports:
+      - 8554:8554       # RTSP
+      - 8888:8888       # Web interface
+    command: /mediamtx.yml
+
+  streamer:
+    image: jrottenberg/ffmpeg:4.3-ubuntu
+    depends_on:
+      - mediamtx
+    volumes:
+      - ./videos:/videos
+    command: >
+      -stream_loop -1 -re -i /videos/stream1.mp4
+      -vf scale=-2:720
+      -r 15
+      -c:v libx264
+      -x264opts bframes=0
+      -preset veryfast
+      -f rtsp rtsp://mediamtx:8554/stream1
