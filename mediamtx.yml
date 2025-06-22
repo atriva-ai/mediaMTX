@@ -723,10 +723,13 @@ paths:
   # example:
   # my_camera:
   #   source: rtsp://my_camera
-  stream1:
-    # runOnInit: ffmpeg -stream_loop -1 -re -i /videos/stream1.mp4 -c copy -f rtsp rtsp://localhost:8554/stream1
+  all:
+    source: publisher
     runOnInitRestart: yes
+  # stream1:
+    # runOnInit: ffmpeg -stream_loop -1 -re -i /videos/stream1.mp4 -c copy -f rtsp rtsp://localhost:8554/stream1
+    # runOnInitRestart: yes
   
   # Settings under path "all_others" are applied to all paths that
   # do not match another entry.
-  all_others:
+  # all_others:
