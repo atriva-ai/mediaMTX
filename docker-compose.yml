@@ -10,17 +10,38 @@
       - 8888:8888       # Web interface
     command: /mediamtx.yml
 
-  streamer:
+  streamer1:
     image: jrottenberg/ffmpeg:4.3-ubuntu
+    restart: unless-stopped
     depends_on:
       - mediamtx
     volumes:
       - ./videos:/videos
     command: >
       -stream_loop -1 -re -i /videos/stream1.mp4
-      -vf scale=-2:720
-      -r 15
-      -c:v libx264
-      -x264opts bframes=0
-      -preset veryfast
+      -c copy
       -f rtsp rtsp://mediamtx:8554/stream1
+
+  streamer2:
+    image: jrottenberg/ffmpeg:4.3-ubuntu
+    restart: unless-stopped
+    depends_on:
+      - mediamtx
+    volumes:
+      - ./videos:/videos
+    command: >
+      -stream_loop -1 -re -i /videos/stream2.mp4
+      -c copy
+      -f rtsp rtsp://mediamtx:8554/stream2
+
+  streamer3:
+    image: jrottenberg/ffmpeg:4.3-ubuntu
+    restart: unless-stopped
+    depends_on:
+      - mediamtx
+    volumes:
+      - ./videos:/videos
+    command: >
+      -stream_loop -1 -re -i /videos/stream3.mp4
+      -c copy
+      -f rtsp rtsp://mediamtx:8554/stream3
